@@ -21,3 +21,20 @@ Feature: Introduction to cucumber part 3
       | name | age | message                   |
       | Tom  | 15  | Hello, Tom, you are a kid |
 
+ # TODO - create Scenario Outline for 'Give us your feedback!' page
+
+  # URL: https://kristinek.github.io/site/tasks/provide_feedback
+  # Navigate to page
+  # Set name and age based on test Examples
+  # Click "Send" button and verify that previous input is displayed in correct fields
+  @current
+  Scenario Outline: Scenario for 'Give us your feedback!' page
+    Given I am on feedback page
+    When I set name on feedback page: "<name>"
+    And I set age on feedback page: <age>
+    And I click Send button on feedback page
+    Then I verify name: "<name>"
+    And I verify age: <age>
+    Examples:
+      | name | age |
+      | Tom  | 15  |

@@ -9,10 +9,11 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static java.lang.Double.isNaN;
+import static org.junit.Assert.*;
 
 public class SampleSteps {
     private WebDriver driver;
@@ -99,5 +100,114 @@ public class SampleSteps {
     @Given("^I am on action page$")
     public void iAmOnActionPage() {
         driver.get("https://kristinek.github.io/site/examples/actions");
+    }
+
+
+    // Sample 1
+    @Given("^I am on the locators page$")
+    public void iAmOnTheLocatorsPage() throws Throwable {
+        driver.get("https://kristinek.github.io/site/examples/locators");
+    }
+
+    @Then("^I should see both locators page headers$")
+    public void iShouldSeeBothHeaders() throws Throwable {
+        assertEquals("Heading 1",
+                driver.findElement(By.id("heading_1")).getText());
+        assertEquals("Heading 2 text",
+                driver.findElement(By.id("heading_2")).getText());
+    }
+
+    @And("^Buttons in Locators page are clickable$")
+    public void buttonsAreClickable() throws Throwable {
+        assertTrue(driver.findElement(By.name("randomButton1")).isEnabled());
+        assertTrue(driver.findElement(By.name("randomButton2")).isEnabled());
+    }
+
+    //Sample2
+
+    //  @Then("^I see error: \"You haven't entered anything in age field\"")
+    //  public void iSeeError() throws Throwable {
+    //      assertEquals("You haven't entered anything in age field",
+    //              driver.findElement(By.id("error")).getText());
+
+    //  }
+
+    @Then("^I see error: \"([^\"]*)\"$")
+    public void iSeeError(String message) throws Throwable {
+        assertEquals(message,
+                driver.findElement(By.id("error")).getText());
+    }
+
+    @And("^I am not navigated to age message page$")
+    public void notNavigatedToAgePage() throws Throwable {
+
+        assertFalse(driver.getCurrentUrl().contains("https://kristinek.github.io/site/examples/age_2.html"));
+
+    }
+
+    //Sample 3
+    @Given("^I am on feedback page$")
+    public void iAmOnTheFeedbackPage() throws Throwable {
+        driver.get("https://kristinek.github.io/site/tasks/provide_feedback");
+    }
+
+    @When("^I set name on feedback page: \"([^\"]*)\"$")
+    public void iSetNameFeedbackPage(String name) throws Throwable {
+        driver.findElement(By.id("fb_name")).sendKeys(name);
+    }
+
+    @And("^I set age on feedback page: ([^\"]*)$")
+    public void iSetAgeFeedbackPage(String age) throws Throwable {
+        driver.findElement(By.id("fb_age")).sendKeys(age);
+    }
+
+    @And("^I click Send button on feedback page$")
+    public void iClickSend() throws Throwable {
+        driver.findElement(By.className("w3-btn-block")).click();
+    }
+
+    @Then("^I verify name: \"([^\"]*)\"$")
+    public void iVerifyName(String name) throws Throwable {
+        assertEquals(name, driver.findElement(By.id("name")).getText());
+    }
+
+    @And("^I verify age: ([^\"]*)$")
+    public void iVerifyAge(String age) throws Throwable {
+        assertEquals(age, driver.findElement(By.id("age")).getText());
+    }
+
+    //Task 1
+    @Given("^I am on Number page$")
+    public void iAmOnNumberPage() throws Throwable {
+        driver.get("https://kristinek.github.io/site/tasks/enter_a_number");
+    }
+
+    @When("^I enter number: ([^\"]*)$")
+    public void iEnterNumberOnNumberPage(String number) throws Throwable {
+        driver.findElement(By.id("numb")).sendKeys(number);
+    }
+
+    @And("^I click Submit button$")
+    public void iClickSubmit() throws Throwable {
+        driver.findElement(By.className("w3-btn")).click();
+    }
+
+    @Then("^I see error message$")
+    public void iVerifyMessage() throws Throwable {
+        assertTrue(driver.findElement(By.id("ch1_error")).isDisplayed());
+
+    }
+
+    @Then("^I see alert message with square root of ([^\"]*)$")
+    public void iSeeSquareRoot(String number) throws Throwable {
+        System.out.println(Double.parseDouble(number));
+        driver.switchTo().alert().getText();
+        String root = String.format(Locale.ENGLISH, "%.2f", Math.sqrt(Double.parseDouble(number)));
+        assertEquals("Square root of " + number + " is " + root, driver.switchTo().alert().getText());
+    }
+
+    @And("^I close alert message$")
+    public void iCloseAlert() throws Throwable {
+        driver.switchTo().alert().accept();
     }
 }

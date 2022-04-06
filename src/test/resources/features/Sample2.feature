@@ -16,3 +16,11 @@ Feature: Introduction to cucumber part 2
     And I enter age: 61
     And I click submit age
     Then I see message: "Hello, Bob, you are an adult"
+
+ # TODO - Add implementation for missing steps
+
+  Scenario: a new scenario error
+    When I enter name: "John"
+    And I click submit age
+    Then I see error: "You haven't entered anything in age field"
+    And I am not navigated to age message page
