@@ -12,21 +12,21 @@ Feature: Task 1
   Background:
     Given I am on Number page
 
-  @current
-Scenario Outline: Scenario for error cases
- When I enter number: <number>
-And I click Submit button
-Then I see error message
-Examples:
-| number |
-| 3      |
-| 123    |
-| test   |
 
-  @current
-Scenario: a new scenario for correct number
-When I enter number: 64
-And I click Submit button
-Then I see alert message with square root of 64
-  And I close alert message
+  Scenario Outline: Scenario for error cases
+    When I enter number: <number>
+    And I click Submit button
+    Then I see error message
+    Examples:
+      | number |
+      | 3      |
+      | 123    |
+      | test   |
+
+
+  Scenario: a new scenario for correct number
+    When I enter number: 64
+    And I click Submit button
+    Then I see alert message with square root of 64
+    And I close alert message
 

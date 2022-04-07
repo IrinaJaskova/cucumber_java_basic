@@ -1,18 +1,17 @@
 package stepDefinitions;
 
+import cucumber.api.DataTable;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import static java.lang.Double.isNaN;
 import static org.junit.Assert.*;
 
 public class SampleSteps {
@@ -209,5 +208,47 @@ public class SampleSteps {
     @And("^I close alert message$")
     public void iCloseAlert() throws Throwable {
         driver.switchTo().alert().accept();
+    }
+
+//Sample 4
+
+    @When("^I select feedback languages$")
+    public void iSelectFeedbackLanguages(List<String> languages) throws Throwable {
+        for (String language : languages) {
+            driver.findElement(By.xpath("//input[@class='w3-check' and @value='" + language + "']")).click();
+        }
+    }
+
+    @Then("^I can see languages \"([^\"]*)\" in feedback check$")
+    public void iSeeLanguagesInFeedbackCheck(String languages) throws Throwable {
+        assertEquals(languages, driver.findElement(By.id("language")).getText());
+    }
+
+
+//Sample 5
+
+    @When("^I enter Name, Age and Genre:$")
+    public void iEnterNameAgeGenreInFeedback(Map<String, String> feedbackInput) throws Throwable {
+        if (feedbackInput.containsKey("name")) {
+            iSetNameFeedbackPage(feedbackInput.get("name"));
+        }
+        iSetAgeFeedbackPage(feedbackInput.get("age"));
+        driver.findElement(By.xpath("//input[@value='" + feedbackInput.get("genre") + "']")).click();
+    }
+
+    @And("^I verify genre: \"([^\"]*)\"$")
+    public void iVerifyGenre(String genre) throws Throwable {
+        assertEquals(genre, driver.findElement(By.id("gender")).getText());
+    }
+
+    @When("^I enter Name, Age and Genre as table:$")
+    public void iEnterDataAsTable(DataTable inputTable) throws Throwable {
+        for (Map<String, String> feedbackInput : inputTable.asMaps(String.class, String.class)) {
+            if (feedbackInput.containsKey("name")) {
+                iSetNameFeedbackPage(feedbackInput.get("name"));
+            }
+            iSetAgeFeedbackPage(feedbackInput.get("age"));
+            driver.findElement(By.xpath("//input[@value='" + feedbackInput.get("genre") + "']")).click();
+        }
     }
 }
